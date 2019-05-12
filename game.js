@@ -37,12 +37,28 @@ function preload() {
       loop: true,
     });
 
-    gameState.scoreText = this.add.text(195, 485, 'Score: 0', { fontSize: '15px', fill: '#000000' });
+    gameState.scoreText = this.add.text(180, 485, 'Score: 0', { fontSize: '15px', fill: '#000000' });
 
     this.physics.add.collider(bugs, platforms, function (bug) {
       bug.destroy();
       gameState.score += 10;
       gameState.scoreText.setText(`Score: ${gameState.score}`);
+    });
+    
+    this.physics.add.collider(gameState.player, bugs, () => {
+      bugGenLoop.destroy();
+      this.physics.pause();
+      this.add.text (180, 225, 'Game Over', {
+         fontSize: '15px', 
+         fill:'#000000' 
+        });
+      this.add.text(152, 270, 'Click to Restart', { fontSize: '15px', fill: '#000000' });
+      this.input.on('pointerup', () => {
+      gameState.score = 0;
+      this.scene.restart();
+      
+    });    
+      
     });
      
   }
