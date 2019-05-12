@@ -9,7 +9,7 @@ function preload() {
   const gameState = {};
   
   function create() {
-    gameState.player = this.physics.add.sprite(225, 440, 'codey').setScale(.5);
+    gameState.player = this.physics.add.sprite(225, 440, 'codey').setScale(.4);
     
     const platforms = this.physics.add.staticGroup();
   
@@ -21,8 +21,23 @@ function preload() {
    
     gameState.cursors = this.input.keyboard.createCursorKeys();
     
-    // Add your code below:
+    const bugs = this.physics.add.group();
+  
+    function bugGen() {
+      const xCoord = Math.random() * 450;
+      bugs.create(xCoord, 10 , 'bug1'); 
+    }
     
+    const bugGenLoop = this.time.addEvent({
+      delay: 100,
+      callback: bugGen,
+      callbackScope: this,
+      loop: true,
+    });
+    this.physics.add.collider(bugs, platforms, function (bug) {
+      bug.destroy();
+    });
+     
   }
   
   function update() {
